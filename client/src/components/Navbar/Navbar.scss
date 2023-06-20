@@ -1,0 +1,41 @@
+.nav_bar {
+  user-select: none;
+  padding: 22px 16px;
+  background-color: #0d1423;
+  font-size: 16px;
+  font-weight: 300;
+  a {
+    padding: 1rem 0;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    color: #ccd1dd;
+    text-decoration: none;
+    margin-right: 16px;
+    font-weight: 600;
+  }
+  .active {
+    color: #1976d2;
+    text-decoration: underline;
+  }
+  .cover {
+    color: #e3e3e8;
+    margin: 0 auto;
+    max-width: 1024px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .logo {
+      font-size: larger;
+      cursor: pointer;
+    }
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    img {
+      width: 30px;
+      margin-right: 16px;
+    }
+  }
+}

@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+  font-family: 'Epilogue', sans-serif;
+  line-height: 1.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  font-size: 16px;
+}
+
+body {
+  background: var(--light-gray);
+  height: 100%;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+:root {
+  --white: #ffffff;
+  --theme-bg: #000000;
+  --dark-gray: #21262b;
+  --light-gray: #444654;
+  --dark-pink: #cb006d;
+  --blue: #19b5fe;
+  --orange: yellow;
+  --purple: purple;
+
+  // font-size
+  --36px-fs: 2.25rem; //36px
+  --35px-fs: 2.1875rem; //35px
+  --20px-fs: 1.25rem; //20px
+  --18px-fs: 1.125rem; //18px
+  --16px-fs: 1rem; //16px
+  --14px-fs: 0.875rem; //14px
+  height: 100%;
+}
+
+// ::-moz-selection {
+//   /* Code for Firefox */
+//   color: var(--white);
+//   background: #cb006d4a;
+// }
+
+// ::selection {
+//   color: var(--white);
+//   background: #cb006d4a;
+// }
+
+.bold {
+  font-weight: 600;
+}
