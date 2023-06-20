@@ -1,15 +1,19 @@
 {
   "name": "frs-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Express Server for Face Recognition via cloud APIs",
   "main": "index.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node dist/index.js",
     "dev": "npx nodemon"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "frs",
+    "face recognition system",
+    "kairos"
+  ],
+  "author": "Syed Arshad",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.4.0",

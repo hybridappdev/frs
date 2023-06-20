@@ -1,7 +1,7 @@
 {
   "name": "frs",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -18,7 +18,6 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.4",
     "axios": "^1.4.0",
-    "face-api.js": "^0.22.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
