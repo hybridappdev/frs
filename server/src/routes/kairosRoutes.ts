@@ -6,6 +6,7 @@ import 'dotenv/config';
 const router = express.Router();
 const GALLERY_NAME = process.env.KAIROS_GALLERY_NAME;
 const LIVENESS_THRESHOLD = 0.1;
+const CONFIDENCE_THRESHOLD = 0.6;
 const loggingEnabled = true;
 
 router.post('/login', async (req: Request, res: Response) => {
@@ -24,13 +25,14 @@ router.post('/login', async (req: Request, res: Response) => {
             if (detectedFaces.length === 0) {
                 res.sendStatus(401);
             } else if (detectedFaces.length === 1) {
-                if (detectedFaces[0].transaction.status === 'success') {
+                if (detectedFaces[0].transaction.status === 'success' && detectedFaces[0].transaction.confidence > CONFIDENCE_THRESHOLD) {
                     if (detectedFaces[0].transaction.liveness > LIVENESS_THRESHOLD) {
                         res.status(200).json({
                             face_id: detectedFaces[0].transaction.face_id,
                             subject_id: detectedFaces[0].transaction.subject_id,
                             confidence: detectedFaces[0].transaction.confidence,
-                            liveness: detectedFaces[0].transaction.liveness
+                            liveness: detectedFaces[0].transaction.liveness,
+                            // fullData: detectedFaces[0].transaction
                         });
                     } else {
                         res.status(400).json({ error: 'Detected spoof-attack due to liveness selector' });

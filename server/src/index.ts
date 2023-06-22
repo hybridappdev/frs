@@ -12,6 +12,7 @@ const port = process.env.PORT || 8000;
 const allowedOrigins: string[] = [
   'http://127.0.0.1:5173',
   'http://localhost:5173',
+  'https://frs.cnbtek.com'
 ];
 
 // Define CORS options
@@ -49,10 +50,18 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 if (process.env.USE_HTTPS === 'true') {
-  const options = {
-    cert: fs.readFileSync(__dirname + '/certs/localhost.pem'),
-    key: fs.readFileSync(__dirname + '/certs/localhost-key.pem'),
-  };
+  let options;
+  if (process.env.ENV === 'prod') {
+    options = {
+      cert: fs.readFileSync(`${process.env.CERT_PATH}`),
+      key: fs.readFileSync(`${process.env.KEY_PATH}`),
+    };
+  } else {
+    options = {
+      cert: fs.readFileSync(__dirname + '/certs/localhost.pem'),
+      key: fs.readFileSync(__dirname + '/certs/localhost-key.pem'),
+    };
+  }
   const server = https.createServer(options, app);
   server.listen(port, () => {
     console.log(`Express server running over HTTPS on port ${port}`);
