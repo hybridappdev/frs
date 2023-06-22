@@ -2,12 +2,17 @@ import express, { Express, Request, Response } from 'express';
 import 'dotenv/config';
 import kairosRoutes from './routes/kairosRoutes';
 import cors, { CorsOptions } from 'cors';
+import * as https from 'https';
+import * as fs from 'fs';
 
 const app: Express = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 
 // Allow requests from specific origins
-const allowedOrigins: string[] = ['http://127.0.0.1:5173', 'http://localhost:5173'];
+const allowedOrigins: string[] = [
+  'http://127.0.0.1:5173',
+  'http://localhost:5173',
+];
 
 // Define CORS options
 const corsOptions: CorsOptions = {
@@ -43,6 +48,17 @@ app.get('/', (req: Request, res: Response) => {
   res.send('FRS Server is running !');
 });
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+if (process.env.USE_HTTPS === 'true') {
+  const options = {
+    cert: fs.readFileSync(__dirname + '/certs/localhost.pem'),
+    key: fs.readFileSync(__dirname + '/certs/localhost-key.pem'),
+  };
+  const server = https.createServer(options, app);
+  server.listen(port, () => {
+    console.log(`Express server running over HTTPS on port ${port}`);
+  });
+} else {
+  app.listen(port, () => {
+    console.log(`Express server running over HTTP on port ${port}`);
+  });
+}
