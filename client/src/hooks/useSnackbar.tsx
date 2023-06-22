@@ -21,9 +21,9 @@ const useSnackbar = () => {
   const SnackbarComponent = () => (
     <Snackbar
       open={open}
-      autoHideDuration={3000}
+      autoHideDuration={5000}
       onClose={handleClose}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >
       <Alert onClose={handleClose} severity={severity}>
         {message}

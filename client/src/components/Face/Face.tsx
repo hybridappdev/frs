@@ -9,9 +9,18 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   TextField,
 } from '@mui/material';
-import { FilterCenterFocus, Videocam, VideocamOff } from '@material-ui/icons';
+import {
+  Cancel,
+  CancelOutlined,
+  Close,
+  FaceRounded,
+  FilterCenterFocus,
+  Videocam,
+  VideocamOff,
+} from '@material-ui/icons';
 import { v4 as uuidv4 } from 'uuid';
 import { TransitionProps } from '@mui/material/transitions';
 import { AxiosError } from 'axios';
@@ -19,9 +28,12 @@ import Slide from '@mui/material/Slide';
 import useSnackbar from '../../hooks/useSnackbar';
 import frsService from '../../services/frs.service';
 import {
+  Face2Outlined,
   PersonAddAlt1Outlined,
+  ResetTvOutlined,
   RestartAltRounded,
   SensorOccupiedOutlined,
+  Verified,
 } from '@mui/icons-material';
 
 export interface FaceObj {
@@ -91,6 +103,16 @@ function Face() {
     setTimeout(() => {
       setCameraLoading(false);
       setCameraOn(false);
+      setAllowRegistration(false);
+    }, 100);
+  };
+
+  const resetPanel = () => {
+    setTimeout(() => {
+      setCameraLoading(false);
+      setCameraOn(true);
+      setCapturedImage(null);
+      setAllowRegistration(false);
     }, 100);
   };
 
@@ -129,6 +151,7 @@ function Face() {
         if (res.status === 200) {
           setShowDialog(false);
           showSnackbar('Face registered successfully', 'success');
+          setAllowRegistration(false);
         }
       } catch (error) {
         const err = error as AxiosError;
@@ -262,88 +285,109 @@ function Face() {
 
         <div className="face_buttons">
           <div className="camera_options">
-            <Button
-              startIcon={<Videocam />}
-              color="error"
-              variant="contained"
-              onClick={(e) => {
-                e.preventDefault();
-                handleStartWebcam();
-              }}
-              disabled={isCameraOn}
-            >
-              Start Camera
-            </Button>
-
-            <Button
-              startIcon={<VideocamOff />}
-              color="error"
-              variant="outlined"
-              onClick={(e) => {
-                e.preventDefault();
-                handleStopWebcam();
-              }}
-              disabled={!isCameraOn}
-            >
-              Stop Camera
-            </Button>
+            {!isCameraOn ? (
+              <Button
+                startIcon={<Videocam />}
+                color="error"
+                variant="contained"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleStartWebcam();
+                }}
+                disabled={isCameraOn}
+              >
+                Start Camera
+              </Button>
+            ) : (
+              <Button
+                startIcon={<VideocamOff />}
+                color="error"
+                variant="outlined"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleStopWebcam();
+                }}
+                disabled={!isCameraOn}
+              >
+                Stop Camera
+              </Button>
+            )}
           </div>
 
           <div>
-            <Button
-              startIcon={<FilterCenterFocus></FilterCenterFocus>}
-              color="success"
-              variant="contained"
-              onClick={(e) => {
-                e.preventDefault();
-                capture();
-              }}
-              disabled={!isCameraOn || isCameraloading}
-            >
-              Capture
-            </Button>
-
-            <Button
-              startIcon={<RestartAltRounded></RestartAltRounded>}
-              color="success"
-              variant="outlined"
-              onClick={(e) => {
-                console.log(e);
-                e.preventDefault();
-                retake();
-              }}
-              disabled={!capturedImage}
-            >
-              Retake
-            </Button>
+            {!capturedImage ? (
+              <Button
+                startIcon={<FilterCenterFocus></FilterCenterFocus>}
+                color="success"
+                variant="contained"
+                onClick={(e) => {
+                  e.preventDefault();
+                  capture();
+                }}
+                disabled={!isCameraOn || isCameraloading}
+              >
+                Capture
+              </Button>
+            ) : (
+              <Button
+                startIcon={<RestartAltRounded></RestartAltRounded>}
+                color="success"
+                variant="outlined"
+                onClick={(e) => {
+                  console.log(e);
+                  e.preventDefault();
+                  retake();
+                }}
+                disabled={!capturedImage}
+              >
+                Retake
+              </Button>
+            )}
           </div>
 
           <div className="user_options">
+            {!capturedImage || !allowRegistration ? (
+              <Button
+                startIcon={<SensorOccupiedOutlined></SensorOccupiedOutlined>}
+                variant="contained"
+                onClick={(e) => {
+                  console.log(e);
+                  e.preventDefault();
+                  loginUser();
+                }}
+                disabled={!capturedImage}
+              >
+                Login
+              </Button>
+            ) : (
+              <Button
+                startIcon={<PersonAddAlt1Outlined></PersonAddAlt1Outlined>}
+                variant="outlined"
+                color="inherit"
+                onClick={(e) => {
+                  console.log(e);
+                  e.preventDefault();
+                  setShowDialog(true);
+                }}
+                disabled={!capturedImage || !allowRegistration}
+              >
+                Register
+              </Button>
+            )}
+          </div>
+          <div className="reset_option">
             <Button
-              startIcon={<SensorOccupiedOutlined></SensorOccupiedOutlined>}
-              variant="contained"
-              onClick={(e) => {
-                console.log(e);
-                e.preventDefault();
-                loginUser();
-              }}
-              disabled={!capturedImage}
-            >
-              Login
-            </Button>
-
-            <Button
-              startIcon={<PersonAddAlt1Outlined></PersonAddAlt1Outlined>}
+              startIcon={<CancelOutlined />}
               variant="outlined"
-              color="inherit"
+              color="warning"
               onClick={(e) => {
                 console.log(e);
                 e.preventDefault();
-                setShowDialog(true);
+                resetPanel();
               }}
-              disabled={!capturedImage || !allowRegistration}
+              disabled={capturedImage === null && !isCameraOn}
             >
-              Register
+              Reset
             </Button>
           </div>
         </div>
@@ -357,30 +401,60 @@ function Face() {
         onClose={handleAuthDialogClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{'Face has been recognized successfully!'}</DialogTitle>
-        <DialogContent>
-          <div>
-            <div className="kv_row">
-              <span className="label">Face ID: </span>
-              <span className="value">{authUser?.face_id}</span>
+        <DialogTitle>
+          <div className="modal_title">
+            <div className="title">
+              <Verified />
+              {'Verified face'}
             </div>
-            <div className="kv_row">
-              <span className="label">Subject ID: </span>
-              <span className="value">{authUser?.subject_id}</span>
-            </div>
-            <div className="kv_row">
-              <span className="label">Liveness: </span>
-              <span className="value">{authUser?.liveness}</span>
-            </div>
-            <div className="kv_row">
-              <span className="label">Confidence: </span>
-              <span className="value">{authUser?.confidence}</span>
+            <div className="close">
+              <IconButton onClick={() => setShowAuthDialog(false)}>
+                <Close></Close>
+              </IconButton>
             </div>
           </div>
+        </DialogTitle>
+        <DialogContent>
+          <div className="modal_content">
+            <div className="verified_face">
+              {capturedImage && <img src={capturedImage.image} alt="user" />}
+            </div>
+            <div className="user_details">
+              <div className="kv_row">
+                <div className="kv_row">
+                  <span className="label">Name</span>
+                  <span className="value">{authUser?.subject_id}</span>
+                </div>
+                <span className="label">Face ID</span>
+                <span className="value">{authUser?.face_id}</span>
+              </div>
+
+              <div className="kv_row">
+                <span className="label">Match (Confidence)</span>
+                <span className="value">
+                  {authUser?.confidence
+                    ? Number(Number(authUser?.confidence) * 100).toFixed(2) +
+                      '%'
+                    : 'N/A'}
+                </span>
+              </div>
+
+              <div className="kv_row">
+                <span className="label">Liveness Detected </span>
+                <span className="value">
+                  {authUser?.liveness
+                    ? Number(authUser?.liveness * 100).toFixed(2) + '%'
+                    : 'N/A'}
+                </span>
+              </div>
+            </div>
+          </div>
+          {/* <div>
+            <pre>
+              <code>{JSON.stringify(authUser, null, 2)}</code>
+            </pre>
+          </div> */}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setShowAuthDialog(false)}>Close</Button>
-        </DialogActions>
       </Dialog>
 
       <Dialog
