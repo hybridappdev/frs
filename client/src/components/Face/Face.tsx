@@ -13,10 +13,8 @@ import {
   TextField,
 } from '@mui/material';
 import {
-  Cancel,
   CancelOutlined,
   Close,
-  FaceRounded,
   FilterCenterFocus,
   Videocam,
   VideocamOff,
@@ -28,9 +26,7 @@ import Slide from '@mui/material/Slide';
 import useSnackbar from '../../hooks/useSnackbar';
 import frsService from '../../services/frs.service';
 import {
-  Face2Outlined,
   PersonAddAlt1Outlined,
-  ResetTvOutlined,
   RestartAltRounded,
   SensorOccupiedOutlined,
   Verified,
