@@ -2,8 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import 'dotenv/config';
 import kairosRoutes from './routes/kairosRoutes';
 import cors, { CorsOptions } from 'cors';
-import * as https from 'https';
-import * as fs from 'fs';
+import https from 'https';
+import fs from 'fs';
 
 const app: Express = express();
 const port = process.env.PORT || 8000;
@@ -11,9 +11,12 @@ const port = process.env.PORT || 8000;
 // Allow requests from specific origins
 const allowedOrigins: string[] = [
   'http://127.0.0.1:5173',
-  'http://localhost:5173',
-  'https://frs.cnbtek.com'
+  'http://localhost:5173'
 ];
+
+if (process.env.SERVER_URL) {
+  allowedOrigins.push(process.env.SERVER_URL);
+}
 
 // Define CORS options
 const corsOptions: CorsOptions = {
