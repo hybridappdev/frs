@@ -13,12 +13,12 @@
 
 // responsive view settings
 
-// .mobile-view {
-//   .main {
-//   }
-// }
-
-// .desktop-view {
-//   .main {
-//   }
-// }
+.mobile-view {
+  .main {
+    padding: 16px;
+  }
+  .page_container {
+    width: 100%;
+    max-width: 598px;
+  }
+}

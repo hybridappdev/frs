@@ -88,33 +88,30 @@ function Face() {
   };
 
   const startCam = () => {
-    setTimeout(() => {
-      if (capturedImage) setCapturedImage(null);
-      setCameraLoading(true);
-      setCameraOn(true);
-    }, 100);
+    if (capturedImage) setCapturedImage(null);
+    setCameraLoading(true);
+    setCameraOn(true);
   };
 
   const handleStopWebcam = () => {
-    setTimeout(() => {
-      setCameraLoading(false);
-      setCameraOn(false);
-      setAllowRegistration(false);
-    }, 100);
+    setCameraLoading(false);
+    setCameraOn(false);
+    setAllowRegistration(false);
   };
 
   const resetPanel = () => {
-    setTimeout(() => {
-      setCameraLoading(false);
-      setCameraOn(true);
-      setCapturedImage(null);
-      setAllowRegistration(false);
-    }, 100);
+    setCapturedImage(null);
+    setAllowRegistration(false);
+    setCameraOn(true);
   };
 
   const capture = useCallback(() => {
     if (webcamRef.current) {
-      const pictureSrc = webcamRef.current.getScreenshot();
+      const pictureSrc = webcamRef.current.getScreenshot({
+        width: 640,
+        height: 480,
+      });
+      console.log(pictureSrc?.length);
       if (pictureSrc) {
         const id = uuidv4();
         const faceObj: FaceObj = {
@@ -239,7 +236,6 @@ function Face() {
           {isCameraloading && (
             <div className="camera_loader">
               <CircularProgress
-                className="camera_loader"
                 color="primary"
                 variant="indeterminate"
                 size={100}
@@ -268,7 +264,7 @@ function Face() {
             </>
           )}
 
-          {!isCameraOn && (
+          {!capturedImage && !isCameraOn && (
             <div className="no_camera">
               <>
                 <VideocamOff style={{ fontSize: 70 }}></VideocamOff>
@@ -390,7 +386,7 @@ function Face() {
       </div>
 
       <Dialog
-        className="modal_dialog"
+        className="modal_dialog verified_dialog"
         open={showAuthDialog}
         TransitionComponent={Transition}
         keepMounted
@@ -417,26 +413,15 @@ function Face() {
             </div>
             <div className="user_details">
               <div className="kv_row">
-                <div className="kv_row">
-                  <span className="label">Name</span>
-                  <span className="value">{authUser?.subject_id}</span>
-                </div>
                 <span className="label">Face ID</span>
                 <span className="value">{authUser?.face_id}</span>
               </div>
-
               <div className="kv_row">
-                <span className="label">Match (Confidence)</span>
-                <span className="value">
-                  {authUser?.confidence
-                    ? Number(Number(authUser?.confidence) * 100).toFixed(2) +
-                      '%'
-                    : 'N/A'}
-                </span>
+                <span className="label">Name</span>
+                <span className="value">{authUser?.subject_id}</span>
               </div>
-
               <div className="kv_row">
-                <span className="label">Liveness Detected </span>
+                <span className="label">Liveness</span>
                 <span className="value">
                   {authUser?.liveness
                     ? Number(authUser?.liveness * 100).toFixed(2) + '%'
@@ -445,11 +430,6 @@ function Face() {
               </div>
             </div>
           </div>
-          {/* <div>
-            <pre>
-              <code>{JSON.stringify(authUser, null, 2)}</code>
-            </pre>
-          </div> */}
         </DialogContent>
       </Dialog>
 
