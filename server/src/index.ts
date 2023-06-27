@@ -12,6 +12,7 @@ const port = process.env.PORT || 8000;
 const allowedOrigins: string[] = [
   'http://127.0.0.1:5173',
   'http://localhost:5173',
+  'https://localhost:5173',
   'https://192.168.1.2:5174'
 ];
 
@@ -44,8 +45,7 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
   }
 });
 
-app.use(express.json());
-
+app.use(express.json({ limit: '50mb' }));
 
 app.use('/api/kairos', kairosRoutes);
 
