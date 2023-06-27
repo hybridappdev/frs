@@ -6,7 +6,7 @@
   .camera_area {
     width: 640px;
     max-width: 100%;
-    max-height: 480px;
+    height: 480px;
     line-height: 0;
     position: relative;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
@@ -32,6 +32,7 @@
       justify-content: center;
     }
     .no_camera {
+      height: 100%;
       // height: 480px;
       line-height: 1.5rem;
       width: 100%;
