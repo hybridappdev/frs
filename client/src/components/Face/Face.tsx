@@ -107,10 +107,7 @@ function Face() {
 
   const capture = useCallback(() => {
     if (webcamRef.current) {
-      const pictureSrc = webcamRef.current.getScreenshot({
-        width: 640,
-        height: 480,
-      });
+      const pictureSrc = webcamRef.current.getScreenshot();
       console.log(pictureSrc?.length);
       if (pictureSrc) {
         const id = uuidv4();

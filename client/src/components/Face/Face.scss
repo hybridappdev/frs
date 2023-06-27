@@ -75,8 +75,6 @@
     margin-top: 16px;
   }
   .camera_area {
-    max-height: unset;
-    height: 480px;
     img {
       object-fit: unset;
     }
@@ -128,7 +126,7 @@
           width: 100%;
           border-radius: 4px;
           overflow: hidden;
-          max-width: 300px;
+          // max-width: 300px;
         }
       }
     }
