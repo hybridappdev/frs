@@ -4,16 +4,22 @@
   align-items: center;
   justify-content: center;
   .camera_area {
+    width: 640px;
+    max-width: 100%;
+    max-height: 480px;
+    line-height: 0;
     position: relative;
-    width: 598px;
-    height: 448.5px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
       rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     overflow: hidden;
     border: solid 1px gray;
     border-radius: 4px;
-    video,
+    video {
+      height: 100%;
+      width: 100%;
+    }
     img {
+      object-fit: contain;
       height: 100%;
       width: 100%;
     }
@@ -26,9 +32,9 @@
       justify-content: center;
     }
     .no_camera {
+      // height: 480px;
       line-height: 1.5rem;
       width: 100%;
-      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -68,11 +74,13 @@
     margin-top: 16px;
   }
   .camera_area {
-    line-height: 0;
-    width: 100%;
-    height: auto;
-    .no_camera {
-      min-height: 300px;
+    max-height: unset;
+    height: 480px;
+    img {
+      object-fit: unset;
+    }
+    video {
+      object-fit: unset;
     }
   }
   button {

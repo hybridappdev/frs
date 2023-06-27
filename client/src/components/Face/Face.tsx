@@ -244,6 +244,7 @@ function Face() {
               />
             </div>
           )}
+
           {!capturedImage && isCameraOn && (
             <Webcam
               audio={false}
