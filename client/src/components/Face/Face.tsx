@@ -267,7 +267,7 @@ function Face() {
               <>
                 <VideocamOff style={{ fontSize: 70 }}></VideocamOff>
                 <h1> Camera is off</h1>
-                <h4>Click on Start Camera to being</h4>
+                <h4>Click on Start Camera to begin</h4>
               </>
             </div>
           )}
