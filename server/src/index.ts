@@ -11,7 +11,8 @@ const port = process.env.PORT || 8000;
 // Allow requests from specific origins
 const allowedOrigins: string[] = [
   'http://127.0.0.1:5173',
-  'http://localhost:5173'
+  'http://localhost:5173',
+  'https://192.168.1.2:5174'
 ];
 
 if (process.env.SERVER_URL) {
